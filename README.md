@@ -22,120 +22,64 @@ STEP-5: Read the characters row wise or column wise in the former order to get t
 ```
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-void encryptRailFence(char str[], int rails, char encrypted[]) {
-int i, j, len, count, code[100][1000];
-len = strlen(str);
-// Initialize the code array to 0
-for (i = 0; i < rails; i++) {
-for (j = 0; j < len; j++) {
-code[i][j] = 0;
-}
-}
-count = 0;
-j = 0;
-while (j < len) {
-if (count % 2 == 0) { // Moving down the rails
-for (i = 0; i < rails && j < len; i++) {
-code[i][j] = (int)str[j];
-j++;
+
+int main()
+{
+    int i, j, k, l;
+    char a[20], c[20], d[20];
+
+    printf("\n\t\tRAIL FENCE TECHNIQUE\n");
+    printf("\nEnter the input string: ");
+    fgets(a, sizeof(a), stdin);
+
+    l = strlen(a);
+
+    for (i = 0, j = 0; i < l; i++)
+    {
+        if (i % 2 == 0)
+        {
+            c[j++] = a[i];
+        }
+    }
+
+    for (i = 0; i < l; i++)
+    {
+        if (i % 2 == 1)
+        {
+            c[j++] = a[i];
+        }
+    }
+
+    c[j] = '\0';
+    printf("\nCipher text after applying rail fence: %s\n", c);
+
+    if (l % 2 == 0)
+    {
+        k = l / 2;
+    }
+    else
+    {
+        k = (l / 2) + 1;
+    }
+
+    for (i = 0, j = 0; i < k; i++)
+    {
+        d[j] = c[i];
+        j += 2;
+    }
+
+    for (i = k, j = 1; i < l; i++)
+    {
+        d[j] = c[i];
+        j += 2;
+    }
+
+    d[l] = '\0';
+    printf("\nText after decryption: %s\n", d);
+
+    return 0;
 }
 
-} else { // Moving up the rails
-for (i = rails - 2; i > 0 && j < len; i--) {
-code[i][j] = (int)str[j];
-j++;
-}
-}
-count++;
-}
-
-int pos = 0;
-for (i = 0; i < rails; i++) {
-for (j = 0; j < len; j++) {
-if (code[i][j] != 0) {
-encrypted[pos++] = code[i][j];
-}
-}
-}
-encrypted[pos] = '\0'; // Null-terminate the string
-}
-void decryptRailFence(char str[], int rails, char decrypted[]) {
-int i, j, len, count, code[100][1000], pos = 0;
-len = strlen(str);
-// Initialize the code array to 0
-for (i = 0; i < rails; i++) {
-for (j = 0; j < len; j++) {
-code[i][j] = 0;
-}
-}
-// Mark the positions where characters will go
-count = 0;
-j = 0;
-while (j < len) {
-if (count % 2 == 0) { // Moving down the rails
-for (i = 0; i < rails && j < len; i++) {
-code[i][j] = 1;
-j++;
-}
-} else { // Moving up the rails
-for (i = rails - 2; i > 0 && j < len; i--) {
-code[i][j] = 1;
-j++;
-}
-}
-count++;
-}
-// Fill the marked positions with the characters from the cipher text
-for (i = 0; i < rails; i++) {
-for (j = 0; j < len; j++) {
-if (code[i][j] == 1) {
-code[i][j] = str[pos++];
-}
-}
-}
-// Reconstruct the decrypted message by following the zigzag pattern
-pos = 0;
-count = 0;
-j = 0;
-while (j < len) {
-if (count % 2 == 0) { // Moving down the rails
-for (i = 0; i < rails && j < len; i++) {
-if (code[i][j] != 0) {
-decrypted[pos++] = code[i][j];
-}
-j++;
-}
-} else { // Moving up the rails
-for (i = rails - 2; i > 0 && j < len; i--) {
-if (code[i][j] != 0) {
-decrypted[pos++] = code[i][j];
-}
-j++;
-}
-}
-count++;
-}
-decrypted[pos] = '\0'; // Null-terminate the string
-}
-int main() {
-char str[1000], encrypted[1000], decrypted[1000];
-int rails;
-printf("Simulating Rail Fence Cipher\n");
-printf("Enter a Secret Message: ");
-fgets(str, sizeof(str), stdin);
-str[strcspn(str, "\n")] = 0; // Remove trailing newline character if exists
-
-printf("Enter number of rails: ");
-scanf("%d", &rails);
-// Encrypt the message
-encryptRailFence(str, rails, encrypted);
-printf("Encrypted Message: %s\n", encrypted);
-// Decrypt the message
-decryptRailFence(encrypted, rails, decrypted);
-printf("Decrypted Message: %s\n", decrypted);
-return 0;
-}
 ```
 
 # OUTPUT
